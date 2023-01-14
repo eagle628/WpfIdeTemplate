@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SampleCompany.SampleProduct.MainApp.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,19 +11,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SampleCompany.SampleProduct.MainApp
+namespace SampleCompany.SampleProduct.MainApp.View
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// MainWindow.xaml の相互作用ロジック
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="viewModel">View Model</param>
+        public MainWindow(MainWindowViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel;
         }
     }
 }
