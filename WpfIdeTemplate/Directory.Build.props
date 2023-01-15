@@ -3,7 +3,8 @@
     <Company>SampleCompany</Company>
     <Product>SampleProduct</Product>
     <Copyright>Copyright © Sample Company</Copyright>
-    <AssemblyName>$(Company).$(Product).$(MSBuildProjectName)</AssemblyName>
+    <!--By Expicit Assembly Name, Project cannot build.-->
+    <!--<AssemblyName>$(Company).$(Product).$(MSBuildProjectName)</AssemblyName>-->
     <RootNamespace>$(Company).$(Product).$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
   </PropertyGroup>
 </Project>

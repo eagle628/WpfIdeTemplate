@@ -4,12 +4,60 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SampleCompany.SampleProduct.MainApp.View"
+        xmlns:vm="clr-namespace:SampleCompany.SampleProduct.MainApp.ViewModel"
+        xmlns:avalonDock="https://github.com/Dirkster99/AvalonDock"
+        xmlns:avalongUtil="clr-namespace:SampleCompany.SampleProduct.DockingUtility;assembly=DockingUtility"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TextBlock Text="SampleMainWindow"
-                   FontSize="40"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"/>
-    </Grid>
+        Title="MainWindow" Height="450" Width="800"
+        d:DataContext="{d:DesignInstance Type={x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=False}">
+    <Window.Resources>
+        <DataTemplate x:Key="AnchorableTemplate" DataType="{x:Type vm:SampleAnchorable}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="User Input"/>
+                <TextBox Text="{Binding Path=UserInputText.Value, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Text="Delayed text"/>
+                <TextBlock Text="{Binding Path=DelayedViewText.Value}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type vm:SampleAnchorable}">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Document"/>
+                <TextBlock Text="Text0"/>
+                <TextBox Text="{Binding Path=Text0.Value, UpdateSourceTrigger=LostFocus}"/>
+                <TextBlock Text="Text1"/>
+                <TextBox Text="{Binding Path=Text1.Value,UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
+    <DockPanel LastChildFill="True">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="New File"/>
+                <MenuItem Header="Open File"/>
+            </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Default"/>
+            </MenuItem>
+        </Menu>
+        <avalonDock:DockingManager DocumentsSource="{Binding Path=DocumentsSource}"
+                                   AnchorablesSource="{Binding Path=AnchorablesSource}">
+            <!--Register Avalon Dock Template Selector-->
+            <avalonDock:DockingManager.LayoutItemTemplateSelector>
+                <vm:PaneTemplateSelector AnchorableTemplate="{StaticResource ResourceKey=AnchorableTemplate}"
+                                         DocumentTemplate="{StaticResource ResourceKey=DocumentTemplate}"/>
+            </avalonDock:DockingManager.LayoutItemTemplateSelector>
+            <!--Register Avalon Dock Style Generator-->
+            <avalonDock:DockingManager.LayoutItemContainerStyleSelector>
+                <avalongUtil:ContentPropertyStyleSelector/>
+            </avalonDock:DockingManager.LayoutItemContainerStyleSelector>
+            <!--Core-->
+            <avalonDock:LayoutRoot>
+                <avalonDock:LayoutPanel Orientation="Horizontal">
+                    <avalonDock:LayoutDocumentPane/>
+                    <avalonDock:LayoutAnchorablePane DockMinWidth="150"/>
+                </avalonDock:LayoutPanel>
+            </avalonDock:LayoutRoot>
+            
+        </avalonDock:DockingManager>
+    </DockPanel>
 </Window>
