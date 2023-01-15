@@ -1,4 +1,5 @@
-﻿using SampleCompany.SampleProduct.PluginUtility;
+﻿using Microsoft.Extensions.Logging;
+using SampleCompany.SampleProduct.PluginUtility;
 using SampleCompany.SampleProduct.SampleDocumentPlugin.ViewModel;
 
 namespace SampleCompany.SampleProduct.SampleDocumentPlugin.Provider
@@ -8,7 +9,8 @@ namespace SampleCompany.SampleProduct.SampleDocumentPlugin.Provider
 
         public object CreatePluginObject(IAppServiceProvider provider)
         {
-            return new SampleDocumentViewModel();
+            var logger = provider.GetRequiredService<ILogger<SampleDocumentViewModel>>();
+            return new SampleDocumentViewModel(logger);
         }
 
         public PluginProvider()

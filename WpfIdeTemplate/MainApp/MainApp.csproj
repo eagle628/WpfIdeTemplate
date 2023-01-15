@@ -16,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj" />
     <ProjectReference Include="..\DockingUtility\DockingUtility.csproj" />
+    <ProjectReference Include="..\InMemoryLogger\InMemoryLogger.csproj" />
     <ProjectReference Include="..\PluginUtility\PluginUtility.csproj" />
   </ItemGroup>
 

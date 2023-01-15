@@ -2,8 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SampleCompany.SampleProduct.CommonLibrary;
+using SampleCompany.SampleProduct.InMemoryLogger;
 using SampleCompany.SampleProduct.MainApp.View;
 using SampleCompany.SampleProduct.MainApp.ViewModel;
+using SampleCompany.SampleProduct.PluginUtility;
 using System;
 using System.IO;
 using System.Reflection;
@@ -15,12 +18,19 @@ namespace SampleCompany.SampleProduct.MainApp
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application
+    public partial class App : Application, IAppServiceProvider
     {
         /// <summary>
         /// Host
         /// </summary>
         private readonly IHost _host;
+        public T? GetService<T>() => _host.Services.GetService<T>();
+
+        public object? GetService(Type serviceType) => _host.Services.GetService(serviceType);
+
+        public T GetRequiredService<T>() where T : notnull => _host.Services.GetRequiredService<T>();
+
+        public object GetRequiredService(Type serviceType) => _host.Services.GetRequiredService(serviceType);
         /// <summary>
         /// Logger
         /// </summary>
@@ -39,11 +49,14 @@ namespace SampleCompany.SampleProduct.MainApp
                         .ConfigureServices(services =>
                         {
                             services.AddSingleton<MainWindowViewModel>()
-                                    .AddSingleton<MainWindow>();
+                                    .AddSingleton<MainWindow>()
+                                    .AddSingleton<IInMemoryLogStore, InMemoryLogStore>();
                         })
                         .ConfigureLogging(logging =>
                         {
-                            logging.AddDebug();
+                            logging.AddDebug()
+                                   .AddInMemoryLogger()
+                                   .SetMinimumLevel(LogLevel.Debug);
                         })
                         .Build();
             _logger = _host.Services.GetRequiredService<ILogger<App>>();

@@ -1,4 +1,5 @@
-﻿using Reactive.Bindings;
+﻿using Microsoft.Extensions.Logging;
+using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using SampleCompany.SampleProduct.DockingUtility;
 using System;
@@ -21,12 +22,23 @@ namespace SampleCompany.SampleProduct.SampleDocumentPlugin.ViewModel
 
         private readonly CompositeDisposable _disposables;
         private readonly ResourceDictionary _resourceDictionary;
+        private readonly ILogger<SampleDocumentViewModel>_logger;
 
-        public SampleDocumentViewModel()
+        public SampleDocumentViewModel(ILogger<SampleDocumentViewModel> logger)
         {
+            _logger = logger;
+
             _disposables = new CompositeDisposable();
             Text0 = new ReactivePropertySlim<string>("Sample0").AddTo(_disposables);
             Text1 = new ReactivePropertySlim<string>("Sample1").AddTo(_disposables);
+
+            Text0.Pairwise()
+                 .Subscribe(msg=>_logger.LogDebug($"Text0 Prop change from {msg.OldItem} to {msg.NewItem}"))
+                 .AddTo(_disposables);
+
+            Text1.Pairwise()
+                 .Subscribe(msg=>_logger.LogDebug($"Text1 Prop change from {msg.OldItem} to {msg.NewItem}"))
+                 .AddTo(_disposables);
 
             var asmName = Assembly.GetExecutingAssembly().GetName().Name;
             _resourceDictionary = new ResourceDictionary()

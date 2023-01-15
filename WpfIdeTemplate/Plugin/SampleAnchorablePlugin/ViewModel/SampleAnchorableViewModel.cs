@@ -1,4 +1,5 @@
 ﻿using AvalonDock.Layout;
+using Microsoft.Extensions.Logging;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 using SampleCompany.SampleProduct.DockingUtility;
@@ -23,15 +24,17 @@ namespace SampleCompany.SampleProduct.SampleAnchorablePlugin.ViewModel
         [StyleProperty(BindingMode.OneWay, ".Value")]
         public ReactivePropertySlim<string> Title { get; } = new ReactivePropertySlim<string>("SampleAnchorable");
 
-        public AnchorSide InitialLocation => AnchorSide.Bottom;
+        public AnchorSide InitialLocation => AnchorSide.Right;
 
         public DataTemplate Template { get; }
 
         private readonly CompositeDisposable _disposables;
         private readonly ResourceDictionary _resourceDictionary;
+        private readonly ILogger<SampleAnchorableViewModel> _logger;
 
-        public SampleAnchorableViewModel()
+        public SampleAnchorableViewModel(ILogger<SampleAnchorableViewModel> logger)
         {
+            _logger = logger;
             _disposables = new CompositeDisposable();
 
             UserInputText = new ReactivePropertySlim<string>("Welcome").AddTo(_disposables);
@@ -39,6 +42,10 @@ namespace SampleCompany.SampleProduct.SampleAnchorablePlugin.ViewModel
                                            .Select(o => o.ToUpper())
                                            .ToReadOnlyReactivePropertySlim()
                                            .AddTo(_disposables);
+
+            UserInputText.Pairwise()
+                         .Subscribe(msg => _logger.LogDebug($"UserInputText change from {msg.OldItem} to {msg.NewItem}"))
+                         .AddTo(_disposables);
 
             var asmName = Assembly.GetExecutingAssembly().GetName().Name;
             _resourceDictionary = new ResourceDictionary()

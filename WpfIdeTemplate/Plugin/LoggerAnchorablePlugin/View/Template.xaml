@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:SampleCompany.SampleProduct.LoggerAnchorablePlugin.ViewModel"
+                    xmlns:common="clr-namespace:SampleCompany.SampleProduct.CommonLibrary;assembly=CommonLibrary">
+    <DataTemplate x:Key="4CE57453ECCA4D5E929AEA07D38DFBD3"
+                  DataType="{x:Type vm:LoggerAnchorableViewModel}">
+        <ScrollViewer HorizontalScrollBarVisibility="Visible">
+            <ItemsControl ItemsSource="{Binding Path=LogData.Value, UpdateSourceTrigger=PropertyChanged}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type common:LogData}">
+                        <Border Margin="1" BorderBrush="Black" BorderThickness="1">
+                            <TextBlock Text="{Binding Path=Message}"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+    </DataTemplate>
+</ResourceDictionary>

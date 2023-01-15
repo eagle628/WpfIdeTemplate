@@ -1,4 +1,5 @@
-﻿using SampleCompany.SampleProduct.PluginUtility;
+﻿using Microsoft.Extensions.Logging;
+using SampleCompany.SampleProduct.PluginUtility;
 using SampleCompany.SampleProduct.SampleAnchorablePlugin.ViewModel;
 
 namespace SampleCompany.SampleProduct.SampleAnchorablePlugin.Provider
@@ -8,7 +9,8 @@ namespace SampleCompany.SampleProduct.SampleAnchorablePlugin.Provider
 
         public object CreatePluginObject(IAppServiceProvider provider)
         {
-            return new SampleAnchorableViewModel();
+            var logger = provider.GetRequiredService<ILogger<SampleAnchorableViewModel>>();
+            return new SampleAnchorableViewModel(logger);
         }
 
         public PluginProvider()
