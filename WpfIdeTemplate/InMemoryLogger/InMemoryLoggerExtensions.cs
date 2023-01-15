@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Options;
-using SampleCompany.SampleProduct.CommonLibrary;
+using SampleCompany.SampleProduct.CommonLibrary.InMemoryLogger;
 using System;
 
 namespace SampleCompany.SampleProduct.InMemoryLogger

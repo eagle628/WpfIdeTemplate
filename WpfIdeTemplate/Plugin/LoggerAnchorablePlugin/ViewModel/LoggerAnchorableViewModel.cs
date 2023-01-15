@@ -1,7 +1,7 @@
 ﻿using AvalonDock.Layout;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using SampleCompany.SampleProduct.CommonLibrary;
+using SampleCompany.SampleProduct.CommonLibrary.InMemoryLogger;
 using SampleCompany.SampleProduct.DockingUtility;
 using System;
 using System.Collections.Generic;

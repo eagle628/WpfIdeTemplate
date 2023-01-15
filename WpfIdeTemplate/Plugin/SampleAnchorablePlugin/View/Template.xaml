@@ -8,6 +8,12 @@
             <TextBox Text="{Binding Path=UserInputText.Value, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Delayed text"/>
             <TextBlock Text="{Binding Path=DelayedViewText.Value}"/>
+            <Border BorderBrush="Black" BorderThickness="2">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Published Message"/>
+                    <TextBlock Text="{Binding Path=PublishedMessage.Value}"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>

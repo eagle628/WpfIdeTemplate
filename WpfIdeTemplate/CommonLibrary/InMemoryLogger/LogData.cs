@@ -1,14 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.ComponentModel;
 
-namespace SampleCompany.SampleProduct.CommonLibrary
+namespace SampleCompany.SampleProduct.CommonLibrary.InMemoryLogger
 {
-    public interface IInMemoryLogStore : INotifyPropertyChanged
-    {
-        public void Push(LogData logData);
-        public IReadOnlyList<LogData> LogData { get; }
-    }
     public readonly struct LogData
     {
         public string Message { get; }

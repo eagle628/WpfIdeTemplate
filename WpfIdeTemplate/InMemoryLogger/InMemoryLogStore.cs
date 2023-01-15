@@ -1,4 +1,4 @@
-﻿using SampleCompany.SampleProduct.CommonLibrary;
+﻿using SampleCompany.SampleProduct.CommonLibrary.InMemoryLogger;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;

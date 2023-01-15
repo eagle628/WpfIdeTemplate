@@ -1,4 +1,4 @@
-﻿using SampleCompany.SampleProduct.CommonLibrary;
+﻿using SampleCompany.SampleProduct.CommonLibrary.InMemoryLogger;
 using SampleCompany.SampleProduct.LoggerAnchorablePlugin.ViewModel;
 using SampleCompany.SampleProduct.PluginUtility;
 

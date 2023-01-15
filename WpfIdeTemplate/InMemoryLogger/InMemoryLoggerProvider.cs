@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using SampleCompany.SampleProduct.CommonLibrary;
+using SampleCompany.SampleProduct.CommonLibrary.InMemoryLogger;
 using System;
 using System.Collections.Concurrent;
 

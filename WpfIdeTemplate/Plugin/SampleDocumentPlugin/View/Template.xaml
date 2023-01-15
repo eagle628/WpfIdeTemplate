@@ -9,6 +9,13 @@
             <TextBox Text="{Binding Path=Text0.Value, UpdateSourceTrigger=LostFocus}"/>
             <TextBlock Text="Text1"/>
             <TextBox Text="{Binding Path=Text1.Value,UpdateSourceTrigger=PropertyChanged}"/>
+            <Border BorderBrush="Black" BorderThickness="2">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="PublishRegion"/>
+                    <TextBox Text="{Binding Path=MessageBox.Value, UpdateSourceTrigger=LostFocus}"/>
+                    <Button Content="Publish" Command="{Binding Path=PublishCommand}"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>

@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using SampleCompany.SampleProduct.CommonLibrary;
+using SampleCompany.SampleProduct.CommonLibrary.InMemoryLogger;
 using System;
 
 namespace SampleCompany.SampleProduct.InMemoryLogger

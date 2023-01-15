@@ -2,10 +2,11 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using SampleCompany.SampleProduct.CommonLibrary;
+using SampleCompany.SampleProduct.CommonLibrary.InMemoryLogger;
 using SampleCompany.SampleProduct.InMemoryLogger;
 using SampleCompany.SampleProduct.MainApp.View;
 using SampleCompany.SampleProduct.MainApp.ViewModel;
+using SampleCompany.SampleProduct.MessageBroker;
 using SampleCompany.SampleProduct.PluginUtility;
 using System;
 using System.IO;
@@ -50,7 +51,8 @@ namespace SampleCompany.SampleProduct.MainApp
                         {
                             services.AddSingleton<MainWindowViewModel>()
                                     .AddSingleton<MainWindow>()
-                                    .AddSingleton<IInMemoryLogStore, InMemoryLogStore>();
+                                    .AddSingleton<IInMemoryLogStore, InMemoryLogStore>()
+                                    .AddMessageBroker();
                         })
                         .ConfigureLogging(logging =>
                         {
