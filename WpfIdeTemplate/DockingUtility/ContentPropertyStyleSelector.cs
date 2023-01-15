@@ -1,8 +1,8 @@
-﻿using System.Reflection;
+﻿using AvalonDock.Controls;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows;
-using AvalonDock.Controls;
 
 namespace SampleCompany.SampleProduct.DockingUtility
 {
@@ -10,27 +10,24 @@ namespace SampleCompany.SampleProduct.DockingUtility
     /// Style Selector for avalon dock
     /// </summary>
     /// <remarks>
-    /// AvalonDockのFrame側にStyleを伝搬させるためのSelector。
-    /// <see cref="StylePropertyAttribute"/>をマークされたプロパティからBindingが自動生成される。
+    /// This class can generate binding from <see cref="IDocumentViewModel"/> or <see cref="IAnchorableViewModel"/>
+    /// to <see cref="LayoutDocumentItem"/> or <see cref="LayoutAnchorableItem"/>
+    /// by properties by sepecified <see cref="StylePropertyAttribute"/>.
     /// </remarks>
     public class ContentPropertyStyleSelector : StyleSelector
     {
         public override Style SelectStyle(object item, DependencyObject container)
         {
-            switch (container)
+            return container switch
             {
-                case LayoutDocumentItem:
-                    return CreateStyle<LayoutDocumentItem>(item, container);
-                case LayoutAnchorableItem:
-                    return CreateStyle<LayoutAnchorableItem>(item, container);
-                default:
-                    return base.SelectStyle(item, container);
-            }
+                LayoutDocumentItem => CreateStyle<LayoutDocumentItem>(item, container),
+                LayoutAnchorableItem => CreateStyle<LayoutAnchorableItem>(item, container),
+                _ => base.SelectStyle(item, container),
+            };
         }
 
         private Style CreateStyle<T>(object item, DependencyObject container) where T : LayoutItem
         {
-            //コンテナがTでない場合はとりあえず普通のStyleを返す
             if (container is not T layoutItem)
             {
                 return base.SelectStyle(item, container);
@@ -45,32 +42,30 @@ namespace SampleCompany.SampleProduct.DockingUtility
                                                      | BindingFlags.FlattenHierarchy);
             foreach (var prop in props)
             {
-                //対象のプロパティのカスタム属性を探す
+                //Does property have a cuctom attribute?
                 var attr = (StylePropertyAttribute?)prop.GetCustomAttributes(typeof(StylePropertyAttribute), true).FirstOrDefault();
-                //なければ飛ばす
                 if (attr is null) { continue; }
-                //UIクラスのスタイルDPを検索
+                //Search Style DP in UI Class (By DP Coding Style)
                 var fieldInfo = layoutItem.GetType().GetField($"{attr.StyleName ?? prop.Name}Property",
                     BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-                //なければ飛ばす
                 if (fieldInfo is null) { continue; }
-                //スタイルDPを取得
+                //Convert Sylte DP
                 var dp = (DependencyProperty?)fieldInfo.GetValue(null);
-                if (dp is null) { continue; }//まずないが}
-                //新しくVMとV間のBindingを作成する
+                if (dp is null) { continue; }
+                //Generate binding between vm and v.
                 string bindingPath = attr.AdditionalBindingPath is null ? prop.Name : $"{prop.Name}{attr.AdditionalBindingPath}";
                 var binding = new Binding(bindingPath)
                 {
                     Source = item,
                     Mode = attr.BindingMode
                 };
-                //セッターを作成
+                //make Setter
                 var setter = new Setter
                 {
                     Property = dp,
                     Value = binding
                 };
-                //スタイルに追加
+                //Add Style
                 style.Setters.Add(setter);
             }
 

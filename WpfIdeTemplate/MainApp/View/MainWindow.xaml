@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SampleCompany.SampleProduct.MainApp.View"
         xmlns:vm="clr-namespace:SampleCompany.SampleProduct.MainApp.ViewModel"
         xmlns:avalonDock="https://github.com/Dirkster99/AvalonDock"
-        xmlns:avalongUtil="clr-namespace:SampleCompany.SampleProduct.DockingUtility;assembly=DockingUtility"
+        xmlns:avalonUtil="clr-namespace:SampleCompany.SampleProduct.DockingUtility;assembly=DockingUtility"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         d:DataContext="{d:DesignInstance Type={x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=False}">
@@ -48,11 +48,11 @@
             </avalonDock:DockingManager.LayoutItemTemplateSelector>
             <!--Register Avalon Dock Style Generator-->
             <avalonDock:DockingManager.LayoutItemContainerStyleSelector>
-                <avalongUtil:ContentPropertyStyleSelector/>
+                <avalonUtil:ContentPropertyStyleSelector/>
             </avalonDock:DockingManager.LayoutItemContainerStyleSelector>
             <!--Register Avalon Dock Layout Strategy-->
             <avalonDock:DockingManager.LayoutUpdateStrategy>
-                <vm:LayoutUpdate/>
+                <avalonUtil:LayoutUpdate/>
             </avalonDock:DockingManager.LayoutUpdateStrategy>
             <!--Core-->
             <avalonDock:LayoutRoot>

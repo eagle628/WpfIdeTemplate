@@ -5,13 +5,8 @@ using Microsoft.Extensions.Logging;
 using SampleCompany.SampleProduct.MainApp.View;
 using SampleCompany.SampleProduct.MainApp.ViewModel;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
