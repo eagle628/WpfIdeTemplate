@@ -48,9 +48,13 @@ namespace SampleCompany.SampleProduct.MainApp.ViewModel
     {
 
     }
-    public interface IAnchorableViewModel : IDockingViewModel 
+    public interface IAnchorableViewModel : IDockingViewModel, IAnchorable
     {
 
+    }
+    public interface IAnchorable
+    {
+        public AnchorSide InitialLocation { get; }
     }
 
     public class SampleDocument : IDocumentViewModel
@@ -83,6 +87,8 @@ namespace SampleCompany.SampleProduct.MainApp.ViewModel
         [StyleProperty(BindingMode.OneWay, ".Value")]
         public ReactivePropertySlim<string> Title { get; } = new ReactivePropertySlim<string>("SampleAnchorable");
 
+        public AnchorSide InitialLocation => AnchorSide.Bottom;
+
         private readonly CompositeDisposable _disposables;
         public SampleAnchorable()
         {
@@ -111,6 +117,82 @@ namespace SampleCompany.SampleProduct.MainApp.ViewModel
                 SampleDocument => DocumentTemplate,
                 _ => base.SelectTemplate(item, container)
             };
+        }
+    }
+    internal class LayoutUpdate : ILayoutUpdateStrategy
+    {
+        public bool BeforeInsertAnchorable(LayoutRoot layout, LayoutAnchorable anchorableToShow, ILayoutContainer destinationContainer)
+        {
+            if (anchorableToShow.Content is IAnchorable anch)
+            {
+                var initialLocation = anch.InitialLocation;
+                var anchPane = layout.Descendents()
+                               .OfType<LayoutAnchorablePane>()
+                               .FirstOrDefault(d => d.GetSide() == initialLocation);
+
+                if (anchPane == null)
+                {
+                    anchPane = CreateAnchorablePane(layout, Orientation.Horizontal, initialLocation);
+                }
+                anchPane.Children.Add(anchorableToShow);
+                return true;
+            }
+
+            return false;
+        }
+        static LayoutAnchorablePane CreateAnchorablePane(LayoutRoot layout, Orientation orientation,
+                    AnchorSide initLocation)
+        {
+            var parent = layout.Descendents().OfType<LayoutPanel>().First(d => d.Orientation == orientation);
+            var toolsPane = new LayoutAnchorablePane();
+            if (initLocation == AnchorSide.Left)
+                parent.InsertChildAt(0, toolsPane);
+            else
+                parent.Children.Add(toolsPane);
+            return toolsPane;
+        }
+
+        public void AfterInsertAnchorable(LayoutRoot layout, LayoutAnchorable anchorable)
+        {
+            // here set the initial dimensions (DockWidth or DockHeight, depending on location) of your anchorable
+            switch (anchorable.GetSide())
+            {
+                case AnchorSide.Left:
+                case AnchorSide.Right:
+                    {
+                        if (anchorable.Parent is LayoutAnchorablePane pane)
+                        {
+                            if (pane.DockWidth.Value < 150)
+                            {
+                                pane.DockWidth = new GridLength(150);
+                            }
+                        }
+                        return;
+                    }
+                case AnchorSide.Bottom:
+                    {
+                        if (anchorable.Parent is LayoutAnchorablePane pane)
+                        {
+                            if (pane.DockHeight.Value < 150)
+                            {
+                                pane.DockHeight = new GridLength(150);
+                            }
+                        }
+                        return;
+                    }
+                default:
+                    break;
+            }
+        }
+
+        public bool BeforeInsertDocument(LayoutRoot layout, LayoutDocument anchorableToShow, ILayoutContainer destinationContainer)
+        {
+            return false;
+        }
+
+        public void AfterInsertDocument(LayoutRoot layout, LayoutDocument anchorableShown)
+        {
+            
         }
     }
 }

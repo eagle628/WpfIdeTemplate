@@ -50,11 +50,19 @@
             <avalonDock:DockingManager.LayoutItemContainerStyleSelector>
                 <avalongUtil:ContentPropertyStyleSelector/>
             </avalonDock:DockingManager.LayoutItemContainerStyleSelector>
+            <!--Register Avalon Dock Layout Strategy-->
+            <avalonDock:DockingManager.LayoutUpdateStrategy>
+                <vm:LayoutUpdate/>
+            </avalonDock:DockingManager.LayoutUpdateStrategy>
             <!--Core-->
             <avalonDock:LayoutRoot>
-                <avalonDock:LayoutPanel Orientation="Horizontal">
-                    <avalonDock:LayoutDocumentPane/>
-                    <avalonDock:LayoutAnchorablePane DockMinWidth="150"/>
+                <avalonDock:LayoutPanel Orientation="Vertical">
+                    <avalonDock:LayoutPanel Orientation="Horizontal">
+                        <avalonDock:LayoutAnchorablePane x:Name="LeftPane" DockWidth="100"/>
+                        <avalonDock:LayoutDocumentPane />
+                        <avalonDock:LayoutAnchorablePane x:Name="RightPane" DockWidth="100"/>
+                    </avalonDock:LayoutPanel>
+                    <avalonDock:LayoutAnchorablePane x:Name="BottomPane" DockHeight="150"/>
                 </avalonDock:LayoutPanel>
             </avalonDock:LayoutRoot>
             
