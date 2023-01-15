@@ -1,5 +1,6 @@
 ﻿using AvalonDock.Layout;
 using System.ComponentModel;
+using System.Windows;
 
 namespace SampleCompany.SampleProduct.DockingUtility
 {
@@ -8,7 +9,7 @@ namespace SampleCompany.SampleProduct.DockingUtility
     /// </summary>
     public interface IDockingViewModel : INotifyPropertyChanged, IDisposable
     {
-
+        DataTemplate Template { get; }
     }
     /// <summary>
     /// Document View Model

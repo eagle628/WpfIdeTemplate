@@ -13,11 +13,11 @@
   <ItemGroup>
     <PackageReference Include="Dirkster.AvalonDock" Version="4.71.1" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
-    <PackageReference Include="ReactiveProperty" Version="8.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\DockingUtility\DockingUtility.csproj" />
+    <ProjectReference Include="..\PluginUtility\PluginUtility.csproj" />
   </ItemGroup>
 
 </Project>

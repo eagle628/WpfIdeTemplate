@@ -10,25 +10,6 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         d:DataContext="{d:DesignInstance Type={x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=False}">
-    <Window.Resources>
-        <DataTemplate x:Key="AnchorableTemplate" DataType="{x:Type vm:SampleAnchorable}">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="User Input"/>
-                <TextBox Text="{Binding Path=UserInputText.Value, UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock Text="Delayed text"/>
-                <TextBlock Text="{Binding Path=DelayedViewText.Value}"/>
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="DocumentTemplate" DataType="{x:Type vm:SampleAnchorable}">
-            <StackPanel Orientation="Vertical">
-                <TextBlock Text="Document"/>
-                <TextBlock Text="Text0"/>
-                <TextBox Text="{Binding Path=Text0.Value, UpdateSourceTrigger=LostFocus}"/>
-                <TextBlock Text="Text1"/>
-                <TextBox Text="{Binding Path=Text1.Value,UpdateSourceTrigger=PropertyChanged}"/>
-            </StackPanel>
-        </DataTemplate>
-    </Window.Resources>
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
@@ -43,8 +24,7 @@
                                    AnchorablesSource="{Binding Path=AnchorablesSource}">
             <!--Register Avalon Dock Template Selector-->
             <avalonDock:DockingManager.LayoutItemTemplateSelector>
-                <vm:PaneTemplateSelector AnchorableTemplate="{StaticResource ResourceKey=AnchorableTemplate}"
-                                         DocumentTemplate="{StaticResource ResourceKey=DocumentTemplate}"/>
+                <avalonUtil:PaneTemplateSelector/>
             </avalonDock:DockingManager.LayoutItemTemplateSelector>
             <!--Register Avalon Dock Style Generator-->
             <avalonDock:DockingManager.LayoutItemContainerStyleSelector>

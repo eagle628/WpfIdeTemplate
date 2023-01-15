@@ -1,15 +1,11 @@
-﻿using AvalonDock.Layout;
-using Reactive.Bindings;
-using Reactive.Bindings.Extensions;
-using SampleCompany.SampleProduct.DockingUtility;
+﻿using SampleCompany.SampleProduct.DockingUtility;
+using SampleCompany.SampleProduct.PluginUtility;
 using System;
-using System.ComponentModel;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
+using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace SampleCompany.SampleProduct.MainApp.ViewModel
 {
@@ -18,81 +14,53 @@ namespace SampleCompany.SampleProduct.MainApp.ViewModel
     /// </summary>
     public class MainWindowViewModel
     {
-        public ReactiveCollection<IDocumentViewModel> DocumentsSource { get; }
-        public ReactiveCollection<IAnchorableViewModel> AnchorablesSource { get; }
+        public ObservableCollection<IDocumentViewModel> DocumentsSource { get; }
+        public ObservableCollection<IAnchorableViewModel> AnchorablesSource { get; }
         /// <summary>
         /// Constructor
         /// </summary>
         public MainWindowViewModel()
         {
-            DocumentsSource = new ReactiveCollection<IDocumentViewModel>();
-            AnchorablesSource = new ReactiveCollection<IAnchorableViewModel>();
+            DocumentsSource = new ObservableCollection<IDocumentViewModel>();
+            AnchorablesSource = new ObservableCollection<IAnchorableViewModel>();
 
-            DocumentsSource.Add(new SampleDocument());
-            AnchorablesSource.Add(new SampleAnchorable());
-        }
-    }
+            var exefilePath = Assembly.GetExecutingAssembly().Location;
+            var exeDir = Path.GetDirectoryName(exefilePath);
 
-    public class SampleDocument : IDocumentViewModel
-    {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        [StyleProperty(BindingMode.OneWay)]
-        public string Title => "SampleDocument";
-        public ReactivePropertySlim<string> Text0 { get; }
-        public ReactivePropertySlim<string> Text1 { get; }
+            var pluginDirectories = Directory.GetDirectories(Path.Combine(exeDir, "Plugin"));
 
-        private readonly CompositeDisposable _disposables;
-        public SampleDocument()
-        {
-            _disposables = new CompositeDisposable();
-            Text0 = new ReactivePropertySlim<string>("Sample0").AddTo(_disposables);
-            Text1 = new ReactivePropertySlim<string>("Sample1").AddTo(_disposables);
-        }
-        public void Dispose()
-        {
-            _disposables.Dispose();
-        }
-    }
-    public class SampleAnchorable : IAnchorableViewModel
-    {
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public ReactivePropertySlim<string> UserInputText { get; }
-        public ReadOnlyReactivePropertySlim<string?> DelayedViewText { get; }
-        
-        [StyleProperty(BindingMode.OneWay, ".Value")]
-        public ReactivePropertySlim<string> Title { get; } = new ReactivePropertySlim<string>("SampleAnchorable");
-
-        public AnchorSide InitialLocation => AnchorSide.Bottom;
-
-        private readonly CompositeDisposable _disposables;
-        public SampleAnchorable()
-        {
-            _disposables = new CompositeDisposable();
-
-            UserInputText = new ReactivePropertySlim<string>("Welcome").AddTo(_disposables);
-            DelayedViewText = UserInputText.Delay(TimeSpan.FromMilliseconds(100))
-                                           .Select(o => o.ToUpper())
-                                           .ToReadOnlyReactivePropertySlim()
-                                           .AddTo(_disposables);
-        }
-        public void Dispose()
-        {
-            _disposables.Dispose();
-        }
-    }
-    internal class PaneTemplateSelector : DataTemplateSelector
-    {
-        public DataTemplate AnchorableTemplate { get; set; }
-        public DataTemplate DocumentTemplate { get; set; }
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
-        {
-            return item switch
+            if (pluginDirectories is not null)
             {
-                SampleAnchorable => AnchorableTemplate,
-                SampleDocument => DocumentTemplate,
-                _ => base.SelectTemplate(item, container)
-            };
+                foreach (var pluginDirectory in pluginDirectories)
+                {
+                    var asmDirName = Path.GetFileName(pluginDirectory);
+                    var asmPath = Path.Combine(pluginDirectory, $"{asmDirName}.dll");
+                    var loadContext = new PluginLoadContext(asmPath);
+                    var asm = loadContext.LoadFromAssemblyName(new AssemblyName(asmDirName));
+                    if (asm is not null)
+                    {
+                        var types = asm.GetExportedTypes();
+
+                        //We can Implement construction resolver by reflection,
+                        //But, it is simple by IPluginProvider
+                        var vmFactoryType = types.Single(o => typeof(IPluginProvider).IsAssignableFrom(o));
+                        if (Activator.CreateInstance(vmFactoryType) is not IPluginProvider vmFactory) { continue; }
+                        var vm = vmFactory.CreatePluginObject(Application.Current as IAppServiceProvider);
+                        switch (vm)
+                        {
+                            case IAnchorableViewModel anchorableViewModel:
+                                AnchorablesSource.Add(anchorableViewModel);
+                                break;
+                            case IDocumentViewModel documentViewModel:
+                                DocumentsSource.Add(documentViewModel);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+
+            }
         }
     }
 }

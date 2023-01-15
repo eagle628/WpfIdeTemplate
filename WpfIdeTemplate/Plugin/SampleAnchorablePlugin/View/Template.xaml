@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:SampleCompany.SampleProduct.SampleAnchorablePlugin.ViewModel">
+    <DataTemplate x:Key="A05545C01A294DCEA9B4A652EEF237C5"
+                  DataType="{x:Type vm:SampleAnchorableViewModel}">
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="User Input"/>
+            <TextBox Text="{Binding Path=UserInputText.Value, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBlock Text="Delayed text"/>
+            <TextBlock Text="{Binding Path=DelayedViewText.Value}"/>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

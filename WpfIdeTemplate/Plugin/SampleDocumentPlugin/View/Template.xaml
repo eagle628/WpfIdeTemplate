@@ -1,0 +1,14 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:vm="clr-namespace:SampleCompany.SampleProduct.SampleDocumentPlugin.ViewModel">
+    <DataTemplate x:Key="702E307F7B8C4B13B99EAEBF5CD24362"
+                  DataType="{x:Type vm:SampleDocumentViewModel}">
+        <StackPanel Orientation="Vertical">
+            <TextBlock Text="Document"/>
+            <TextBlock Text="Text0"/>
+            <TextBox Text="{Binding Path=Text0.Value, UpdateSourceTrigger=LostFocus}"/>
+            <TextBlock Text="Text1"/>
+            <TextBox Text="{Binding Path=Text1.Value,UpdateSourceTrigger=PropertyChanged}"/>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>
