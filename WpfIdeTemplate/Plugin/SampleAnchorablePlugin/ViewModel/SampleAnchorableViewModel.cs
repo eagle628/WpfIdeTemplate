@@ -23,7 +23,7 @@ namespace SampleCompany.SampleProduct.SampleAnchorablePlugin.ViewModel
 
         public ReactivePropertySlim<string> UserInputText { get; }
         public ReadOnlyReactivePropertySlim<string?> DelayedViewText { get; }
-        public ReactivePropertySlim<string?> PublishedMessage { get; }
+        public ReadOnlyReactivePropertySlim<string?> PublishedMessage { get; }
 
         [StyleProperty(BindingMode.OneWay, ".Value")]
         public ReactivePropertySlim<string> Title { get; } = new ReactivePropertySlim<string>("SampleAnchorable");
@@ -55,14 +55,11 @@ namespace SampleCompany.SampleProduct.SampleAnchorablePlugin.ViewModel
                          .Subscribe(msg => _logger.LogDebug($"UserInputText change from {msg.OldItem} to {msg.NewItem}"))
                          .AddTo(_disposables);
 
-            PublishedMessage = new ReactivePropertySlim<string?>();
+            PublishedMessage = _asynSubscriber.ToObservable()
+                                              .Select(msg => msg.Message)
+                                              .ToReadOnlyReactivePropertySlim()
+                                              .AddTo(_disposables);
 
-            _asynSubscriber.Subscribe((msg, ct) => 
-                        {
-                            PublishedMessage.Value = msg.Message; 
-                            return ValueTask.CompletedTask;
-                        })
-                       .AddTo(_disposables);
             _asynSubscriber.Subscribe((msg, ct) =>
                         {
                             _logger.LogDebug($"{nameof(SampleAnchorableViewModel)} are published message : {msg.Message}");
