@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SampleCompany.SampleProduct.CommonLibrary;
+using SampleCompany.SampleProduct.CommonLibrary.MessageBroker;
 
 namespace SampleCompany.SampleProduct.MessageBroker
 {

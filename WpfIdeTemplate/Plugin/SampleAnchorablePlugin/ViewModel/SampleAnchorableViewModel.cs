@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
-using SampleCompany.SampleProduct.CommonLibrary;
 using SampleCompany.SampleProduct.CommonLibrary.MessageBroker;
 using SampleCompany.SampleProduct.CommonLibrary.MessageBroker.MessageStructure;
 using SampleCompany.SampleProduct.DockingUtility;

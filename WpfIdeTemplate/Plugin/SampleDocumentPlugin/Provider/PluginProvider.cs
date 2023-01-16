@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using SampleCompany.SampleProduct.CommonLibrary;
+using SampleCompany.SampleProduct.CommonLibrary.MessageBroker;
 using SampleCompany.SampleProduct.CommonLibrary.MessageBroker.MessageStructure;
 using SampleCompany.SampleProduct.PluginUtility;
 using SampleCompany.SampleProduct.SampleDocumentPlugin.ViewModel;

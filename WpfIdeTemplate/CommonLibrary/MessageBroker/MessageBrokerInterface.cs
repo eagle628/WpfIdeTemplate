@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SampleCompany.SampleProduct.CommonLibrary
+namespace SampleCompany.SampleProduct.CommonLibrary.MessageBroker
 {
     public interface IMessageBroker<TMessage> : IPublisher<TMessage>, ISubscriber<TMessage>
     {

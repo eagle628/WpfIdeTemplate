@@ -1,4 +1,4 @@
-﻿using SampleCompany.SampleProduct.CommonLibrary;
+﻿using SampleCompany.SampleProduct.CommonLibrary.MessageBroker;
 using System;
 using System.Collections.Concurrent;
 

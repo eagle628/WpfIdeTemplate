@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SampleCompany.SampleProduct.CommonLibrary
+namespace SampleCompany.SampleProduct.CommonLibrary.MessageBroker
 {
     public static partial class SubscriberExtensions
     {
