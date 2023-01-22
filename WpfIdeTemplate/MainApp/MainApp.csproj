@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.0" />
+    <PackageReference Include="ReactiveProperty" Version="8.2.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +21,15 @@
     <ProjectReference Include="..\InMemoryLogger\InMemoryLogger.csproj" />
     <ProjectReference Include="..\MessageBroker\MessageBroker.csproj" />
     <ProjectReference Include="..\PluginUtility\PluginUtility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="usersettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

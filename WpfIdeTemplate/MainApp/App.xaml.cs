@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SampleCompany.SampleProduct.CommonLibrary.InMemoryLogger;
+using SampleCompany.SampleProduct.CommonLibrary.UserSettings;
 using SampleCompany.SampleProduct.InMemoryLogger;
 using SampleCompany.SampleProduct.MainApp.View;
 using SampleCompany.SampleProduct.MainApp.ViewModel;
@@ -43,22 +44,29 @@ namespace SampleCompany.SampleProduct.MainApp
         {
             var appLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             _host = Host.CreateDefaultBuilder()
-                        .ConfigureAppConfiguration(config =>
+                        .ConfigureAppConfiguration((hostingContext, configuration) =>
                         {
-                            config.SetBasePath(appLocation);
+                            configuration.Sources.Clear();
+                            configuration.SetBasePath(appLocation)
+                                         .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                                         .AddJsonFile("usersettings.json", true, true);
                         })
-                        .ConfigureServices(services =>
+                        .ConfigureServices((hostingContext, services) =>
                         {
                             services.AddSingleton<MainWindowViewModel>()
                                     .AddSingleton<MainWindow>()
                                     .AddSingleton<IInMemoryLogStore, InMemoryLogStore>()
-                                    .AddMessageBroker();
+                                    .AddMessageBroker()
+                                    .AddSingleton(typeof(IConfiguration), hostingContext.Configuration)
+                                    .AddSingleton<UserSettingsManager>();
                         })
-                        .ConfigureLogging(logging =>
+                        .ConfigureLogging((hostingContext, logging) =>
                         {
-                            logging.AddDebug()
-                                   .AddInMemoryLogger()
-                                   .SetMinimumLevel(LogLevel.Debug);
+                            logging.ClearProviders()
+                                   //This ExMethod is optional. Automatically inject
+                                   .AddConfiguration(hostingContext.Configuration)
+                                   .AddDebug()
+                                   .AddInMemoryLogger();
                         })
                         .Build();
             _logger = _host.Services.GetRequiredService<ILogger<App>>();

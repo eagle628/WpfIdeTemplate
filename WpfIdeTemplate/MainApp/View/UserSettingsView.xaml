@@ -1,0 +1,15 @@
+﻿<Window x:Class="SampleCompany.SampleProduct.MainApp.View.UserSettingsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SampleCompany.SampleProduct.MainApp.View"
+        xmlns:vm="clr-namespace:SampleCompany.SampleProduct.MainApp.ViewModel"
+        mc:Ignorable="d"
+        Title="UserSettings" Height="450" Width="800"
+        d:DataContext="{d:DesignInstance Type={x:Type vm:UserSettingsViewModel}}">
+    <StackPanel Orientation="Vertical">
+        <ComboBox ItemsSource="{Binding Path=CultureNameList}" SelectedItem="{Binding Path=CultureName}"/>
+        <Button Content="Update Settings" Command="{Binding Path=UserSettingsUpdateCommand}"/>
+    </StackPanel>
+</Window>

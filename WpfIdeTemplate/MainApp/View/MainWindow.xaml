@@ -19,6 +19,9 @@
             <MenuItem Header="Edit">
                 <MenuItem Header="Default"/>
             </MenuItem>
+            <MenuItem Header="Setting">
+                <MenuItem Header="User Setting" Command="{Binding Path=CallUserSettingCommand}"/>
+            </MenuItem>
         </Menu>
         <avalonDock:DockingManager DocumentsSource="{Binding Path=DocumentsSource}"
                                    AnchorablesSource="{Binding Path=AnchorablesSource}">

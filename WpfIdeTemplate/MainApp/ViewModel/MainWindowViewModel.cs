@@ -1,4 +1,7 @@
-﻿using SampleCompany.SampleProduct.DockingUtility;
+﻿using Reactive.Bindings;
+using SampleCompany.SampleProduct.CommonLibrary.UserSettings;
+using SampleCompany.SampleProduct.DockingUtility;
+using SampleCompany.SampleProduct.MainApp.View;
 using SampleCompany.SampleProduct.PluginUtility;
 using System;
 using System.Collections.ObjectModel;
@@ -16,6 +19,7 @@ namespace SampleCompany.SampleProduct.MainApp.ViewModel
     {
         public ObservableCollection<IDocumentViewModel> DocumentsSource { get; }
         public ObservableCollection<IAnchorableViewModel> AnchorablesSource { get; }
+        public  ReactiveCommand CallUserSettingCommand { get; }
         /// <summary>
         /// Constructor
         /// </summary>
@@ -61,6 +65,13 @@ namespace SampleCompany.SampleProduct.MainApp.ViewModel
                 }
 
             }
+            var provider = Application.Current as IAppServiceProvider ?? throw new Exception();
+            CallUserSettingCommand = new ReactiveCommand()
+                .WithSubscribe(() =>
+                {
+                    var v = new UserSettingsView(new UserSettingsViewModel(provider.GetRequiredService<UserSettingsManager>()));
+                    v.ShowDialog();
+                });
         }
     }
 }
