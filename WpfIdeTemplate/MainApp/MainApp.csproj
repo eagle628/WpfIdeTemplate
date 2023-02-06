@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ApplicationEngineService\ApplicationEngineService.csproj" />
     <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj" />
     <ProjectReference Include="..\DockingUtility\DockingUtility.csproj" />
     <ProjectReference Include="..\InMemoryLogger\InMemoryLogger.csproj" />

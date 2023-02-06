@@ -16,6 +16,13 @@
                     <Button Content="Publish" Command="{Binding Path=PublishCommand}"/>
                 </StackPanel>
             </Border>
+            <Border BorderBrush="Black" BorderThickness="2">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="EngineRegion"/>
+                    <TextBlock Text="{Binding Path=EngineMessageBox.Value}"/>
+                    <Button Content="Engine" Command="{Binding Path=EngineCommand}"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
     </DataTemplate>
 </ResourceDictionary>

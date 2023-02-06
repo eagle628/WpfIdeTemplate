@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Grpc.Net.Client;
+using Microsoft.Extensions.Logging;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
+using SampleCompany.SampleProduct.ApplicationEngine.Proto;
 using SampleCompany.SampleProduct.CommonLibrary.MessageBroker;
 using SampleCompany.SampleProduct.CommonLibrary.MessageBroker.MessageStructure;
 using SampleCompany.SampleProduct.DockingUtility;
@@ -24,11 +26,16 @@ namespace SampleCompany.SampleProduct.SampleDocumentPlugin.ViewModel
         public ReactivePropertySlim<string> Text1 { get; }
         public ReactivePropertySlim<string> MessageBox { get; }
         public AsyncReactiveCommand PublishCommand { get; }
+        public ReactivePropertySlim<string> EngineMessageBox { get; }
+        public AsyncReactiveCommand EngineCommand { get; }
 
         private readonly CompositeDisposable _disposables;
         private readonly ResourceDictionary _resourceDictionary;
         private readonly ILogger<SampleDocumentViewModel>_logger;
         private readonly IAsyncPublisher<SampleMessage> _asyncPublisher;
+
+        private readonly GrpcChannel _channel;
+        private readonly Greeter.GreeterClient _greeterClient;
 
         public SampleDocumentViewModel(
             ILogger<SampleDocumentViewModel> logger,
@@ -50,6 +57,17 @@ namespace SampleCompany.SampleProduct.SampleDocumentPlugin.ViewModel
                                                            _logger.LogDebug("Publish End");
                                                        })
                                                        .AddTo(_disposables);
+
+            _channel = GrpcChannel.ForAddress("http://localhost:5145");
+            _greeterClient = new Greeter.GreeterClient(_channel);
+
+            EngineMessageBox = new ReactivePropertySlim<string>("Initial", ReactivePropertyMode.DistinctUntilChanged).AddTo(_disposables);
+            EngineCommand = new AsyncReactiveCommand().WithSubscribe(async () =>
+                                                        {
+                                                            var reply = await _greeterClient.SayHelloAsync(new HelloRequest() { Name = $"eagle628 : {DateTime.Now}"});
+                                                            EngineMessageBox.Value = reply.Message;
+                                                        })
+                                                        .AddTo(_disposables);
 
             Text0.Pairwise()
                  .Subscribe(msg=>_logger.LogDebug($"Text0 Prop change from {msg.OldItem} to {msg.NewItem}"))

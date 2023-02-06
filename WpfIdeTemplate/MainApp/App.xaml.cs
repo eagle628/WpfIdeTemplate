@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SampleCompany.SampleProduct.ApplicationEngineService;
 using SampleCompany.SampleProduct.CommonLibrary.InMemoryLogger;
 using SampleCompany.SampleProduct.CommonLibrary.UserSettings;
 using SampleCompany.SampleProduct.InMemoryLogger;
@@ -43,6 +44,9 @@ namespace SampleCompany.SampleProduct.MainApp
         public App()
         {
             var appLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            var applicationEngineLocation = Path.Combine(appLocation, @"Engine\ApplicationEngine.exe");
+            
+
             _host = Host.CreateDefaultBuilder()
                         .ConfigureAppConfiguration((hostingContext, configuration) =>
                         {
@@ -58,7 +62,9 @@ namespace SampleCompany.SampleProduct.MainApp
                                     .AddSingleton<IInMemoryLogStore, InMemoryLogStore>()
                                     .AddMessageBroker()
                                     .AddSingleton(typeof(IConfiguration), hostingContext.Configuration)
-                                    .AddSingleton<UserSettingsManager>();
+                                    .AddSingleton<UserSettingsManager>()
+                                    .AddSingleton(s => new GrpcClientServiceConfiguration(applicationEngineLocation, "http://localhost:5145"))
+                                    .AddHostedService<GrpcClientService>();
                         })
                         .ConfigureLogging((hostingContext, logging) =>
                         {
