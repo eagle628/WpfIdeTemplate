@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessageBroker", "MessageBro
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationEngine", "ApplicationEngine\ApplicationEngine.csproj", "{1CE2C37B-A0DD-4D7C-ACC4-EA66D376FD81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationEngineService", "ApplicationEngineService\ApplicationEngineService.csproj", "{4813FFFC-55B8-45AB-8E05-EFB914A24435}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApplicationEngineService", "ApplicationEngineService\ApplicationEngineService.csproj", "{4813FFFC-55B8-45AB-8E05-EFB914A24435}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EngineEntity", "EngineEntity\EngineEntity.csproj", "{D0B7127D-9386-41D1-AA27-DE5AFAB1D7B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{4813FFFC-55B8-45AB-8E05-EFB914A24435}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4813FFFC-55B8-45AB-8E05-EFB914A24435}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4813FFFC-55B8-45AB-8E05-EFB914A24435}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0B7127D-9386-41D1-AA27-DE5AFAB1D7B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0B7127D-9386-41D1-AA27-DE5AFAB1D7B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0B7127D-9386-41D1-AA27-DE5AFAB1D7B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0B7127D-9386-41D1-AA27-DE5AFAB1D7B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

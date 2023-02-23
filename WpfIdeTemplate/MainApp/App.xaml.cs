@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SampleCompany.SampleProduct.ApplicationEngine.Proto;
 using SampleCompany.SampleProduct.ApplicationEngineService;
 using SampleCompany.SampleProduct.CommonLibrary.InMemoryLogger;
 using SampleCompany.SampleProduct.CommonLibrary.UserSettings;
@@ -65,6 +66,10 @@ namespace SampleCompany.SampleProduct.MainApp
                                     .AddSingleton<UserSettingsManager>()
                                     .AddSingleton(s => new GrpcClientServiceConfiguration(applicationEngineLocation, "http://localhost:5145"))
                                     .AddHostedService<GrpcClientService>();
+                            //Grpc Client
+                            var address = new Uri("http://localhost:5145");
+                            services.AddGrpcClient<Greeter.GreeterClient>(options => options.Address = address);
+                            services.AddGrpcClient<ProjectManagement.ProjectManagementClient>(options => options.Address = address);
                         })
                         .ConfigureLogging((hostingContext, logging) =>
                         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SampleCompany.SampleProduct.ApplicationEngine.Proto;
 using SampleCompany.SampleProduct.CommonLibrary.MessageBroker;
 using SampleCompany.SampleProduct.CommonLibrary.MessageBroker.MessageStructure;
 using SampleCompany.SampleProduct.PluginUtility;
@@ -13,7 +14,8 @@ namespace SampleCompany.SampleProduct.SampleDocumentPlugin.Provider
         {
             var logger = provider.GetRequiredService<ILogger<SampleDocumentViewModel>>();
             var pulisher = provider.GetRequiredService<IAsyncPublisher<SampleMessage>>();
-            return new SampleDocumentViewModel(logger, pulisher);
+            var client = provider.GetRequiredService<Greeter.GreeterClient>();
+            return new SampleDocumentViewModel(logger, pulisher, client);
         }
 
         public PluginProvider()

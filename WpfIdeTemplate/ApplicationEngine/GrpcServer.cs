@@ -1,5 +1,7 @@
 ﻿using ApplicationEngine.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using SampleCompany.SampleProduct.ApplicationEngine.Services;
+using SampleCompany.SampleProduct.EngineEntity;
 
 namespace SampleCompany.SampleProduct.ApplicationEngine
 {
@@ -41,7 +43,9 @@ namespace SampleCompany.SampleProduct.ApplicationEngine
         {
             services.AddGrpc();
 
-            services.AddSingleton<GreeterService>();
+            services.AddSingleton<GreeterService>()
+                    .AddSingleton<ProjectManagementService>()
+                    .AddSingleton<ProjectManager>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -51,6 +55,7 @@ namespace SampleCompany.SampleProduct.ApplicationEngine
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<ProjectManagementService>();
             });
         }
     }

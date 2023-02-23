@@ -39,7 +39,8 @@ namespace SampleCompany.SampleProduct.SampleDocumentPlugin.ViewModel
 
         public SampleDocumentViewModel(
             ILogger<SampleDocumentViewModel> logger,
-            IAsyncPublisher<SampleMessage> asynPublisher)
+            IAsyncPublisher<SampleMessage> asynPublisher,
+            Greeter.GreeterClient greeterClient)
         {
             _logger = logger;
             _asyncPublisher = asynPublisher;
@@ -58,8 +59,9 @@ namespace SampleCompany.SampleProduct.SampleDocumentPlugin.ViewModel
                                                        })
                                                        .AddTo(_disposables);
 
-            _channel = GrpcChannel.ForAddress("http://localhost:5145");
-            _greeterClient = new Greeter.GreeterClient(_channel);
+            //_channel = GrpcChannel.ForAddress("http://localhost:5145");
+            //_greeterClient = new Greeter.GreeterClient(_channel);
+            _greeterClient = greeterClient;
 
             EngineMessageBox = new ReactivePropertySlim<string>("Initial", ReactivePropertyMode.DistinctUntilChanged).AddTo(_disposables);
             EngineCommand = new AsyncReactiveCommand().WithSubscribe(async () =>
