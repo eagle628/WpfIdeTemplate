@@ -17,6 +17,7 @@ namespace SampleCompany.SampleProduct.MainApp.ViewModel
     /// </summary>
     public class MainWindowViewModel
     {
+        public IDockingViewModel ActiveDockingViewModel { get; set; }
         public ObservableCollection<IDocumentViewModel> DocumentsSource { get; }
         public ObservableCollection<IAnchorableViewModel> AnchorablesSource { get; }
         public  ReactiveCommand CallUserSettingCommand { get; }

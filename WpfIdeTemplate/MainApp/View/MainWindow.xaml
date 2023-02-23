@@ -10,6 +10,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         d:DataContext="{d:DesignInstance Type={x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=False}">
+    <Window.Resources>
+        <avalonUtil:ActiveDocumentConverter x:Key="ActiveDocumentConverter" />
+    </Window.Resources>
     <DockPanel LastChildFill="True">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
@@ -24,7 +27,8 @@
             </MenuItem>
         </Menu>
         <avalonDock:DockingManager DocumentsSource="{Binding Path=DocumentsSource}"
-                                   AnchorablesSource="{Binding Path=AnchorablesSource}">
+                                   AnchorablesSource="{Binding Path=AnchorablesSource}"
+                                   ActiveContent="{Binding Path=ActiveDockingViewModel, Mode=TwoWay, Converter={StaticResource ActiveDocumentConverter}}">
             <!--Register Avalon Dock Template Selector-->
             <avalonDock:DockingManager.LayoutItemTemplateSelector>
                 <avalonUtil:PaneTemplateSelector/>
@@ -42,7 +46,7 @@
                 <avalonDock:LayoutPanel Orientation="Vertical">
                     <avalonDock:LayoutPanel Orientation="Horizontal">
                         <avalonDock:LayoutAnchorablePane x:Name="LeftPane" DockWidth="100"/>
-                        <avalonDock:LayoutDocumentPane />
+                        <avalonDock:LayoutDocumentPane/>
                         <avalonDock:LayoutAnchorablePane x:Name="RightPane" DockWidth="100"/>
                     </avalonDock:LayoutPanel>
                     <avalonDock:LayoutAnchorablePane x:Name="BottomPane" DockHeight="150"/>
