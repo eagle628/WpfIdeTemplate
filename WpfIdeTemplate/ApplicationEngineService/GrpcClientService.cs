@@ -15,7 +15,6 @@ namespace SampleCompany.SampleProduct.ApplicationEngineService
         {
             _logger = logger;
             _serverExeFilePath = configuration.ServerExeFilePath;
-            _serverExeFilePath = @"C:\Users\NaoyaInoue\source\repos\WpfIdeTemplate\WpfIdeTemplate\Result\Debug\Engine\ApplicationEngine.exe";
             _grpcAddress = configuration.GrpcAddress;
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
