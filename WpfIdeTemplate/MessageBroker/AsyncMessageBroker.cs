@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SampleCompany.SampleProduct.MessageBroker
 {
-    public class AsyncMessageBroker<TMessage> : IAsnycMessageBroker<TMessage>
+    internal class AsyncMessageBroker<TMessage> : IAsnycMessageBroker<TMessage>
     {
         private readonly AsyncMessageBrokerCore<TMessage> _core;
 
@@ -30,7 +30,7 @@ namespace SampleCompany.SampleProduct.MessageBroker
             return ((IAsyncSubscriber<TMessage>)_core).Subscribe(asyncHandler);
         }
     }
-    public class AsyncMessageBrokerCore<TMessage> : IAsnycMessageBroker<TMessage>
+    internal class AsyncMessageBrokerCore<TMessage> : IAsnycMessageBroker<TMessage>
     {
         private readonly ConcurrentDictionary<Guid, IAsyncMessageHandler<TMessage>> _handlers;
         public AsyncMessageBrokerCore()

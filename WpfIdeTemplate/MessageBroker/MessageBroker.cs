@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 
 namespace SampleCompany.SampleProduct.MessageBroker
 {
-    public class MessageBroker<TMessage> : IMessageBroker<TMessage>
+    internal class MessageBroker<TMessage> : IMessageBroker<TMessage>
     {
         private readonly MessageBrokerCore<TMessage> _core;
 
@@ -23,7 +23,7 @@ namespace SampleCompany.SampleProduct.MessageBroker
             return ((ISubscriber<TMessage>)_core).Subscribe(handler);
         }
     }
-    public class MessageBrokerCore<TMessage> : IMessageBroker<TMessage>
+    internal class MessageBrokerCore<TMessage> : IMessageBroker<TMessage>
     {
         private readonly ConcurrentDictionary<Guid, IMessageHandler<TMessage>> _handlers;
         public MessageBrokerCore()
