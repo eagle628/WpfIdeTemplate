@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SampleCompany.SampleProduct.CommonLibrary.MessageBroker;
 using SampleCompany.SampleProduct.CommonLibrary.MessageBroker.MessageStructure;
 using SampleCompany.SampleProduct.PluginUtility;
@@ -9,7 +11,7 @@ namespace SampleCompany.SampleProduct.SampleAnchorablePlugin.Provider
     public class PluginProvider : IPluginProvider
     {
 
-        public object CreatePluginObject(IAppServiceProvider provider)
+        public object CreatePluginObject(IServiceProvider provider)
         {
             var logger = provider.GetRequiredService<ILogger<SampleAnchorableViewModel>>();
             var pub = provider.GetRequiredService<IAsyncSubscriber<SampleMessage>>();

@@ -7,29 +7,20 @@ using System.Threading.Tasks;
 
 namespace SampleCompany.SampleProduct.EngineEntity
 {
-    public class ProjectManager
+    public class ApplicationInstanceManager
     {
-        private readonly ConcurrentDictionary<Guid, Project> _projects;
-        public ProjectManager()
+        private readonly ConcurrentDictionary<Guid, ApplicationInstance> _projects;
+        public ApplicationInstanceManager()
         {
-            _projects = new ConcurrentDictionary<Guid, Project>();
+            _projects = new ConcurrentDictionary<Guid, ApplicationInstance>();
         }
-        public Guid CreateProject()
+        public Task<ProjectInfo> CreateProject(Empty request, ServerCallContext context)
         {
-            var project = new Project();
-            while (true)
-            {
-                var guid = Guid.NewGuid();
-                if (_projects.TryAdd(guid, project))
-                {
-                    return guid;
-                }
-            }
-            
+            return base.CreateProject(request, context);
         }
-        public void DestroyProject(Guid guid)
+        public Task<Empty> DestoryProject(ProjectInfo request, ServerCallContext context)
         {
-            _projects.TryRemove(guid, out var _);
+            return base.DestoryProject(request, context);
         }
     }
 }

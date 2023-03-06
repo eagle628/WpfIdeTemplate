@@ -44,8 +44,8 @@ namespace SampleCompany.SampleProduct.ApplicationEngine
             services.AddGrpc();
 
             services.AddSingleton<GreeterService>()
-                    .AddSingleton<ProjectManagementService>()
-                    .AddSingleton<ProjectManager>();
+                    .AddSingleton<ApplicationInstanceManager>()
+                    .AddSingleton<ApplicationInstanceManagementService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -55,7 +55,7 @@ namespace SampleCompany.SampleProduct.ApplicationEngine
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGrpcService<GreeterService>();
-                endpoints.MapGrpcService<ProjectManagementService>();
+                endpoints.MapGrpcService<ApplicationInstanceManagementService>();
             });
         }
     }

@@ -9,18 +9,30 @@
             <TextBox Text="{Binding Path=Text0.Value, UpdateSourceTrigger=LostFocus}"/>
             <TextBlock Text="Text1"/>
             <TextBox Text="{Binding Path=Text1.Value,UpdateSourceTrigger=PropertyChanged}"/>
-            <Border BorderBrush="Black" BorderThickness="2">
+            <Border BorderBrush="Black" BorderThickness="2" Margin="2">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="PublishRegion"/>
                     <TextBox Text="{Binding Path=MessageBox.Value, UpdateSourceTrigger=LostFocus}"/>
                     <Button Content="Publish" Command="{Binding Path=PublishCommand}"/>
                 </StackPanel>
             </Border>
-            <Border BorderBrush="Black" BorderThickness="2">
+            <Border BorderBrush="Black" BorderThickness="2" Margin="2">
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="EngineRegion"/>
                     <TextBlock Text="{Binding Path=EngineMessageBox.Value}"/>
                     <Button Content="Engine" Command="{Binding Path=EngineCommand}"/>
+                </StackPanel>
+            </Border>
+            <Border BorderBrush="Red" BorderThickness="2" Margin="2">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Instance Test"/>
+                    <Button Content="Create instance" Command="{Binding Path=CreateInstanceCommand}"/>
+                    <Button Content="Destroy instance" Command="{Binding Path=DestroyInstanceCommand}"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox ItemsSource="{Binding Path=InstanceIdList.Value}"
+                                  SelectedItem="{Binding Path=SelectedId.Value}"/>
+                        <Button Content="Update Combo" Command="{Binding Path=GetInstanceIdListCommand}"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
         </StackPanel>

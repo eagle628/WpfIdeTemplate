@@ -1,4 +1,6 @@
-﻿using Reactive.Bindings;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Reactive.Bindings;
 using SampleCompany.SampleProduct.CommonLibrary.UserSettings;
 using SampleCompany.SampleProduct.DockingUtility;
 using SampleCompany.SampleProduct.MainApp.View;
@@ -15,8 +17,10 @@ namespace SampleCompany.SampleProduct.MainApp.ViewModel
     /// <summary>
     /// MainWaindowViewModel
     /// </summary>
-    public class MainWindowViewModel
+    public sealed class MainWindowViewModel : IDisposable
     {
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger<MainWindowViewModel> _logger;
         public IDockingViewModel ActiveDockingViewModel { get; set; }
         public ObservableCollection<IDocumentViewModel> DocumentsSource { get; }
         public ObservableCollection<IAnchorableViewModel> AnchorablesSource { get; }
@@ -24,8 +28,11 @@ namespace SampleCompany.SampleProduct.MainApp.ViewModel
         /// <summary>
         /// Constructor
         /// </summary>
-        public MainWindowViewModel()
+        public MainWindowViewModel(IServiceProvider serviceProvider, ILogger<MainWindowViewModel> logger)
         {
+            _serviceProvider = serviceProvider;
+            _logger = logger;
+
             DocumentsSource = new ObservableCollection<IDocumentViewModel>();
             AnchorablesSource = new ObservableCollection<IAnchorableViewModel>();
 
@@ -50,7 +57,7 @@ namespace SampleCompany.SampleProduct.MainApp.ViewModel
                         //But, it is simple by IPluginProvider
                         var vmFactoryType = types.Single(o => typeof(IPluginProvider).IsAssignableFrom(o));
                         if (Activator.CreateInstance(vmFactoryType) is not IPluginProvider vmFactory) { continue; }
-                        var vm = vmFactory.CreatePluginObject(Application.Current as IAppServiceProvider);
+                        var vm = vmFactory.CreatePluginObject(_serviceProvider);
                         switch (vm)
                         {
                             case IAnchorableViewModel anchorableViewModel:
@@ -66,13 +73,24 @@ namespace SampleCompany.SampleProduct.MainApp.ViewModel
                 }
 
             }
-            var provider = Application.Current as IAppServiceProvider ?? throw new Exception();
             CallUserSettingCommand = new ReactiveCommand()
                 .WithSubscribe(() =>
                 {
-                    var v = new UserSettingsView(new UserSettingsViewModel(provider.GetRequiredService<UserSettingsManager>()));
+                    var v = new UserSettingsView(new UserSettingsViewModel(_serviceProvider.GetRequiredService<UserSettingsManager>()));
                     v.ShowDialog();
                 });
+        }
+
+        public void Dispose()
+        {
+            foreach (var disposable in DocumentsSource.OfType<IDisposable>())
+            {
+                disposable.Dispose();
+            }
+            foreach (var disposable in AnchorablesSource.OfType<IDisposable>())
+            {
+                disposable.Dispose();
+            }
         }
     }
 }

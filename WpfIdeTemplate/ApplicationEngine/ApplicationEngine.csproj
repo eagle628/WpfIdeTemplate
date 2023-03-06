@@ -14,10 +14,6 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.40.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EngineEntity\EngineEntity.csproj" />
-  </ItemGroup>
-
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="XCOPY $(OutDir) $(SolutionDir)Result\$(Configuration)\Engine /S/I/Y" />
   </Target>

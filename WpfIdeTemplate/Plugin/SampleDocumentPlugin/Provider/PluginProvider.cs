@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using SampleCompany.SampleProduct.ApplicationEngine.Proto;
 using SampleCompany.SampleProduct.CommonLibrary.MessageBroker;
 using SampleCompany.SampleProduct.CommonLibrary.MessageBroker.MessageStructure;
@@ -10,12 +12,13 @@ namespace SampleCompany.SampleProduct.SampleDocumentPlugin.Provider
     public class PluginProvider : IPluginProvider
     {
 
-        public object CreatePluginObject(IAppServiceProvider provider)
+        public object CreatePluginObject(IServiceProvider provider)
         {
             var logger = provider.GetRequiredService<ILogger<SampleDocumentViewModel>>();
             var pulisher = provider.GetRequiredService<IAsyncPublisher<SampleMessage>>();
-            var client = provider.GetRequiredService<Greeter.GreeterClient>();
-            return new SampleDocumentViewModel(logger, pulisher, client);
+            var greeterClient = provider.GetRequiredService<Greeter.GreeterClient>();
+            var managementClient = provider.GetRequiredService<ApplicationInstanceManagement.ApplicationInstanceManagementClient>();
+            return new SampleDocumentViewModel(logger, pulisher, greeterClient, managementClient);
         }
 
         public PluginProvider()

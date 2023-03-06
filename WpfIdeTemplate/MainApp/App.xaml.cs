@@ -22,19 +22,12 @@ namespace SampleCompany.SampleProduct.MainApp
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : Application, IAppServiceProvider
+    public partial class App : Application
     {
         /// <summary>
         /// Host
         /// </summary>
         private readonly IHost _host;
-        public T? GetService<T>() => _host.Services.GetService<T>();
-
-        public object? GetService(Type serviceType) => _host.Services.GetService(serviceType);
-
-        public T GetRequiredService<T>() where T : notnull => _host.Services.GetRequiredService<T>();
-
-        public object GetRequiredService(Type serviceType) => _host.Services.GetRequiredService(serviceType);
         /// <summary>
         /// Logger
         /// </summary>
@@ -69,7 +62,7 @@ namespace SampleCompany.SampleProduct.MainApp
                             //Grpc Client
                             var address = new Uri("http://localhost:5145");
                             services.AddGrpcClient<Greeter.GreeterClient>(options => options.Address = address);
-                            services.AddGrpcClient<ProjectManagement.ProjectManagementClient>(options => options.Address = address);
+                            services.AddGrpcClient<ApplicationInstanceManagement.ApplicationInstanceManagementClient>(options=>options.Address=address);
                         })
                         .ConfigureLogging((hostingContext, logging) =>
                         {

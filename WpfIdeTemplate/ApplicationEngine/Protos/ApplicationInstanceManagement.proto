@@ -1,0 +1,22 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "SampleCompany.SampleProduct.ApplicationEngine.Proto";
+
+import "google/protobuf/empty.proto";
+
+package ApplicationInstanceManagement;
+
+service ApplicationInstanceManagement {
+  rpc CreateApplicationInstance (google.protobuf.Empty) returns (ApplicationInstanceInfo);
+  rpc DestroyApplicationInstance (ApplicationInstanceInfo) returns (google.protobuf.Empty);
+  rpc GetApplicationInstanceIds (google.protobuf.Empty) returns (ApplicationInstanceIds);
+}
+
+message ApplicationInstanceInfo {
+  string id = 1;
+}
+
+message ApplicationInstanceIds {
+  repeated string ids = 1;
+}
+
