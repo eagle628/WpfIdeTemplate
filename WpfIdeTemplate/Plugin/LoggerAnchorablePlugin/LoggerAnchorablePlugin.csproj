@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\ApplicationEngineService\ApplicationEngineService.csproj">
+        <Private>false</Private>
+        <ExcludeAssets>runtime</ExcludeAssets>
+    </ProjectReference>
     <ProjectReference Include="..\..\CommonLibrary\CommonLibrary.csproj">
       <Private>false</Private>
       <ExcludeAssets>runtime</ExcludeAssets>

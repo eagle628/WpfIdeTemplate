@@ -63,6 +63,7 @@ namespace SampleCompany.SampleProduct.MainApp
                             var address = new Uri("http://localhost:5145");
                             services.AddGrpcClient<Greeter.GreeterClient>(options => options.Address = address);
                             services.AddGrpcClient<ApplicationInstanceManagement.ApplicationInstanceManagementClient>(options=>options.Address=address);
+                            services.AddGrpcClient<ApplicationIEngineLogging.ApplicationIEngineLoggingClient>(options => options.Address = address);
                         })
                         .ConfigureLogging((hostingContext, logging) =>
                         {

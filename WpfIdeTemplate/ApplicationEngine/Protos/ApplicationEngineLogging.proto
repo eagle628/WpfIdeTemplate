@@ -1,0 +1,17 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "SampleCompany.SampleProduct.ApplicationEngine.Proto";
+
+package ApplicationEngineLogging;
+
+service ApplicationIEngineLogging {
+  rpc Subscribe(LoggingSubscribeRequest) returns (stream LogData);
+}
+
+message LogData {
+    string Message = 1;
+}
+
+message LoggingSubscribeRequest {
+
+}
